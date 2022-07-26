@@ -1,0 +1,84 @@
+package Vista.Tablas;
+
+import Vista.Tablas.*;
+import Controlador.Exceptions.VerticeException;
+import Controlador.TDA_Grafo.GrafoEND;
+import Modelo.Lugares;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.AbstractTableModel;
+
+/**
+ *
+ * @author HMCC
+ */
+public class ModeloTablaLugar extends AbstractTableModel {
+
+    private GrafoEND<Lugares> grafoEND;
+    private String[] columnas;
+
+    public GrafoEND getGrafoEND() {
+        return grafoEND;
+    }
+
+    public void setGrafoEND(GrafoEND grafoEND) {
+        this.grafoEND = grafoEND;
+    }
+
+    public String[] getColumnas() {
+        return columnas;
+    }
+
+    public void setColumnas(String[] columnas) {
+        this.columnas = columnas;
+    }
+
+    @Override
+    public int getRowCount() {
+        return grafoEND.numVertices();
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 4;
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        switch (column) {
+            case 0:
+                return "Nro";
+            case 1:
+                return "Nombres";
+            case 2:
+                return "Tipo";
+            case 3:
+                return "Ubicacion";
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public Object getValueAt(int arg0, int arg1) {
+        try {
+            Lugares lugar = grafoEND.obtenerEtiqueta(arg0+1);
+            switch (arg1) {
+                case 0:
+                    return (arg0+1);
+                case 1:
+                    return lugar.getNombre();
+                case 2:
+                    return lugar.getTipoLugar();
+                case 3:
+                    return (lugar.getUbicacion() == null) ? "NO TIENE" : lugar.getUbicacion().toString();
+                default:
+                    return null;
+            }
+        } catch (Exception ex) {
+            System.out.println("ERROR: " + ex);
+            return null;
+        }
+    }
+
+}
